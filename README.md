@@ -16,7 +16,7 @@ Pre-requisite:<br>
 
 Configuration:<br>
 1. Update the first line to point to your Python path i.e. on my system it is: #!/opt/local/bin/python<br>
-2. Update the 'email' variable to your email address<br>
+2. Update the user, pwd and recipient variables within the generateNotification function.  This should be your Gmail details so the email can be proxied through the Google servers to your inbox.
 3. Store both files in same directory, <i><b>stocks.py</b></i> and <i><b>stocks.db</b></i> (DB is provided for you with schema defined)<br>
 4. Add all of the tickers you wish to track to the <i><b>tickers.csv</b></i> file<br>
 5. Add tickers you wish to alert on to the <i><b>alert_tickers.csv</b></i> file.  The threshold for RSI is below 30 or above 70.  

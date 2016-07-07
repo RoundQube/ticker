@@ -14,7 +14,7 @@ Pre-requisite:<br>
 3. Python yahoo-finance library<br><br>
 
 Configuration:<br>
-1. Download all files to your local directory<br>
+1. Download all files (csvs, db and py) to your local directory<br>
 2. Update the first line to point to your Python path i.e. on my system it is: #!/opt/local/bin/python<br>
 3. Update the <b>user</b>, <b>pwd</b> and <b>recipient</b> variables within the generateNotification function.  This should be your Gmail details so the email can be proxied through the Google servers to your inbox.
 4. Store both files in same directory, <i><b>stocks.py</b></i> and <i><b>stocks.db</b></i> (DB is provided for you with schema defined)<br>

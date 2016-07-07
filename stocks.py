@@ -3,6 +3,7 @@
 import json
 import time
 import sqlite3
+import smtplib
 from datetime import date, timedelta
 from yahoo_finance import Share
 
@@ -83,7 +84,7 @@ def calculate(ticker):
 		writeDB(dateTime, ticker, closePrice, fastema, slowema, macd, signal, histogram, rsi14day)
 
 		# only allow notifications to be sent if data exists in the DB
-		sendNotification()
+		generateNotification()
 '''
 Function:
 	calculateRSI
@@ -131,12 +132,12 @@ def calculateRSI(ticker):
 	return rsi14day
 '''
 Function:
-	sendNotification
+	generateNotification
 Notes:
 	Read csv of tickers one is interested in and send email summary. NOTE: the seperation between tickers.csv and alert_tickers.csv is to allow the user to allow ths script to pull data for a variety of tickers to keep building historical data, however, only send notifications for the tickers in alert_tickers.csv to allow the user some flexibility 
 
 '''
-def sendNotification():
+def generateNotification():
 	
 	emailBody = ''
 
@@ -181,8 +182,17 @@ def sendNotification():
 			# close DB gracefully
 			conn.close()
 
-			# send the email summary
-			print emailBody
+			# CONFIGURE: sendEmail takes these parameters
+			#	user = your Gmail username
+			#	pwd = your Gmail password
+			#	recipient = your Gmail address
+			user = 'YOUR_USERNAME@gmail.com'
+			pwd = 'YOUR_PASSWORD'
+			recipient = 'YOUR_USERNAME@gmail.com'
+			
+			# only send if emailBody has data to send
+			if emailBody != '':
+				sendEmail(user, pwd, recipient, 'Ticker Summary', emailBody)
 
 '''
 Function:
@@ -232,12 +242,34 @@ def writeDB(dateTime, ticker, closePrice, day12Avg, day26Avg, macd, signalAvg, h
 	conn.close()
 
 '''
+'''
+def sendEmail(user, pwd, recipient, subject, body):
+
+    gmail_user = user
+    gmail_pwd = pwd
+    FROM = user
+    TO = recipient if type(recipient) is list else [recipient]
+    SUBJECT = subject
+    TEXT = body
+
+    # Prepare actual message
+    message = """From: %s\nTo: %s\nSubject: %s\n\n%s
+    """ % (FROM, ", ".join(TO), SUBJECT, TEXT)
+    try:
+        server = smtplib.SMTP("smtp.gmail.com", 587)
+        server.ehlo()
+        server.starttls()
+        server.login(gmail_user, gmail_pwd)
+        server.sendmail(FROM, TO, message)
+        server.close()
+        print 'successfully sent the mail'
+    except:
+        print "failed to send mail"
+
+'''
 Function:
 	main
 '''
-# set email address here
-email = 'naushad.kasu@gmail.com'
-
 # pull info for a well known ticker to establish date of pulled stock data
 seedDate = Share('SPY')
 currentTradeDate = seedDate.get_trade_datetime()[:10]

@@ -5,6 +5,9 @@ RSI and histogram alerting based on stock ticker symbol
 A python script that loops through ticker symbols and generates RSI (14 day average) and histogram (MACD-based metrics)
 and emails a summary of thresholds met to an email address.
 
+<b>Caveat</b><br>
+EMA is extrapolated using averages initially, as is the MACD, signal and histogram.  As more data is collected, it will get finer tuned and more accurate (over the 12-26 day period for any new ticker).  Although, I haven't seen it off by enough to dismiss it's usefulness.<br>
+
 <b>How do I use ticker?</b><br>
 These are basic instructions, ping me on Reddit (/u/roundqube) if you need further instructions specific to your situation...<br><br>
 
